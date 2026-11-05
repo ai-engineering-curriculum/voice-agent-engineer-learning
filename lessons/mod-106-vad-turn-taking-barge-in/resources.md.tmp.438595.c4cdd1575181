@@ -1,0 +1,109 @@
+# Resources for mod-106-vad-turn-taking-barge-in
+
+Primary sources only. Cite these in your work; reach for secondary tutorials only when the primary source is unreadable.
+
+## Core turn-taking research
+
+### Conversation analysis — the foundations
+
+- **Sacks, Schegloff, Jefferson — "A Simplest Systematics for the Organization of Turn-Taking for Conversation"** — *Language* 50 (1974). [DOI 10.2307/412243](https://doi.org/10.2307/412243). The foundational paper; source of the Transition-Relevant Place (TRP) vocabulary.
+- **Duncan — "Some signals and rules for taking speaking turns in conversations"** — *J. Pers. Soc. Psychol.* 23 (1972). [DOI 10.1037/h0033031](https://doi.org/10.1037/h0033031). The signalling catalogue: pitch, drawl, gesture, loudness.
+
+### The survey to read now
+
+- **Skantze — "Turn-taking in Conversational Systems and Human-Robot Interaction: A Review"** — *Computer Speech & Language* 67 (2021), 101178. [DOI 10.1016/j.csl.2020.101178](https://doi.org/10.1016/j.csl.2020.101178). Preprint typically available on the author's [KTH page](https://www.csc.kth.se/~skantze/). The vocabulary + framing this module leans on.
+
+### Voice Activity Projection and prediction-based turn modelling
+
+- **Ekstedt & Skantze — "Voice Activity Projection: Self-supervised Learning of Turn-taking Events"** — ICASSP 2022. [arXiv:2205.09812](https://arxiv.org/abs/2205.09812). Reference implementation at [github.com/ErikEkstedt/VoiceActivityProjection](https://github.com/ErikEkstedt/VoiceActivityProjection).
+- **Roddy, Skantze, Harte — "Multimodal continuous turn-taking prediction using multiscale RNNs"** — ICMI 2018. [arXiv:1808.10622](https://arxiv.org/abs/1808.10622). Predecessor to VAP.
+- Streaming / real-time VAP follow-ups and multilingual VAP extensions — see [Ekstedt's publications](https://github.com/ErikEkstedt). <!-- needs-research: verify current titles / venues for the streaming-VAP and multilingual-VAP papers at author time -->
+
+### Dialog acts and backchannels
+
+- **Stolcke et al. — "Dialogue Act Modeling for Automatic Tagging and Recognition of Conversational Speech"** — *Computational Linguistics* 26 (2000). [aclanthology.org/J00-3003](https://aclanthology.org/J00-3003/). The SwDA tag set.
+- **Jurafsky, Shriberg, Biasca — "Switchboard SWBD-DAMSL Shallow-Discourse-Function Annotation Coders Manual"** — [draft 13, 1997](http://web.stanford.edu/~jurafsky/ws97/manual.august1.html). The labelling guide with operational backchannel definitions.
+- **Shriberg et al. — "The ICSI Meeting Recorder Dialog Act (MRDA) Corpus"** — SIGdial 2004. [aclanthology.org/W04-2319](https://aclanthology.org/W04-2319/).
+
+### Neural end-pointing (background reading)
+
+- **Masumura et al. — "Online end-of-turn detection from speech based on stateful sequence labeling"** — Interspeech 2017. <!-- needs-research: confirm exact citation for a canonical pre-VAP neural end-pointing paper at author time -->
+
+## VAD — open-source + managed
+
+- **Silero VAD** — [github.com/snakers4/silero-vad](https://github.com/snakers4/silero-vad). Open-weights neural VAD; MIT. Current open-source default.
+- **WebRTC VAD** — upstream in the WebRTC codebase; Python wrapper at [py-webrtcvad](https://github.com/wiseman/py-webrtcvad). Historical compare-point.
+- **Pyannote** — [github.com/pyannote/pyannote-audio](https://github.com/pyannote/pyannote-audio); [Bredin et al., 2020](https://arxiv.org/abs/1911.01255). VAD, diarisation, overlap detection as one stack.
+- **NVIDIA NeMo VAD** — part of the [NeMo toolkit](https://github.com/NVIDIA/NeMo).
+
+### Server-side VAD / turn-detection contracts
+
+- **OpenAI Realtime** — API reference at [platform.openai.com/docs/api-reference/realtime](https://platform.openai.com/docs/api-reference/realtime). `turn_detection` field: `server_vad`, `semantic_vad`, or `none`. Guides: [platform.openai.com/docs/guides/realtime](https://platform.openai.com/docs/guides/realtime).
+- **Google Gemini Live** — [ai.google.dev/gemini-api/docs/live](https://ai.google.dev/gemini-api/docs/live). `realtime_input_config.automatic_activity_detection` block. <!-- needs-research: verify current Gemini Live automatic_activity_detection field names and defaults at author time -->
+
+## Turn-detection and EOU — industrial references
+
+- **LiveKit turn-detector** — [docs.livekit.io/agents/build/turns/turn-detector/](https://docs.livekit.io/agents/build/turns/turn-detector/). Open-weights model + framework integration. <!-- needs-research: confirm the current LiveKit turn-detector model repo URL, parameter count, and license at author time -->
+- **LiveKit Agents framework** — [docs.livekit.io/agents](https://docs.livekit.io/agents/). Turn-detection interface and the composable Agent pipeline.
+- **Pipecat** — [docs.pipecat.ai](https://docs.pipecat.ai/). Audio-frame pipeline with VAD / EOU integration points.
+
+## Barge-in — vendor engineering references
+
+- **OpenAI Realtime interrupt semantics** — `response.cancel` and `conversation.item.truncate` in the [Realtime API reference](https://platform.openai.com/docs/api-reference/realtime). `interrupt_response` field on server VAD.
+- **Twilio Media Streams** — [twilio.com/docs/voice/media-streams](https://www.twilio.com/docs/voice/media-streams). Bidirectional telephony audio; barge-in design notes in the Media Streams quickstarts.
+- **Twilio ConversationRelay** — [twilio.com/docs/voice/twiml/connect/conversationrelay](https://www.twilio.com/docs/voice/twiml/connect/conversationrelay). Turn-taking + barge-in on the relay layer. <!-- needs-research: verify ConversationRelay URL and turn-taking-related options at author time -->
+
+## Corpora for backchannel, overlap, and turn-taking evaluation
+
+### English conversational telephony
+
+- **Switchboard-1 Release 2** — [LDC97S62](https://catalog.ldc.upenn.edu/LDC97S62). The canonical English conversational-telephony corpus; dialog-act annotations in the [Switchboard Dialog Act (SwDA)](http://compprag.christopherpotts.net/swda.html) distribution.
+- **Fisher English Training Part 1 / Part 2** — [LDC2004S13](https://catalog.ldc.upenn.edu/LDC2004S13) / [LDC2005S13](https://catalog.ldc.upenn.edu/LDC2005S13). Larger English telephony corpus.
+- **CallHome / CallFriend English** — [LDC97S42](https://catalog.ldc.upenn.edu/LDC97S42) and sister corpora. Non-English CallHome / CallFriend sets exist for Spanish, Mandarin, Japanese, Arabic, German.
+
+### Multi-party meetings
+
+- **AMI Meeting Corpus** — [groups.inf.ed.ac.uk/ami/corpus](https://groups.inf.ed.ac.uk/ami/corpus/). Multi-party meeting audio with turn and overlap annotations.
+- **ICSI Meeting Corpus** — [LDC2004S02](https://catalog.ldc.upenn.edu/LDC2004S02). Multi-party meetings with MRDA annotations.
+
+### Noise mixing
+
+- **MUSAN** — [openslr.org/17](https://www.openslr.org/17/); [Snyder, Chen, Povey 2015](https://arxiv.org/abs/1510.08484). Music + speech + noise mix corpus; the default background-mixing source.
+- **DEMAND** — [zenodo.org/record/1227121](https://zenodo.org/record/1227121). Realistic environmental recordings for noise augmentation.
+
+### Clean speech (anchors for mixing)
+
+- **LibriSpeech** — [openslr.org/12](https://www.openslr.org/12/); [Panayotov et al., 2015](https://www.danielpovey.com/files/2015_icassp_librispeech.pdf). Clean read speech for mixing with noise.
+- **VCTK** — [datashare.ed.ac.uk/handle/10283/3443](https://datashare.ed.ac.uk/handle/10283/3443). Multi-speaker English read speech.
+
+## Labelling / annotation tooling
+
+- **Label Studio** — [labelstud.io](https://labelstud.io/). Open-source multi-modal annotation.
+- **Praat** — [fon.hum.uva.nl/praat](https://www.fon.hum.uva.nl/praat/). Phonetic annotation; TextGrids as the native label format.
+- **ELAN** — [archive.mpi.nl/tla/elan](https://archive.mpi.nl/tla/elan). Multi-tier annotation; standard in conversation-analysis research.
+
+## Latency and audio-engineering adjacencies
+
+- **WebRTC audio-processing** (AEC, NS, AGC) — the [WebRTC audio_processing module](https://webrtc.googlesource.com/src/+/refs/heads/main/modules/audio_processing/). Barge-in requires AEC.
+- **Opus codec** — RFC 6716 (2012) [datatracker.ietf.org/doc/html/rfc6716](https://datatracker.ietf.org/doc/html/rfc6716). Transport-layer audio codec used end-to-end.
+
+## Latency-budget references (hand-off to Module 109)
+
+- Module 109 consumes Chapter 5's metrics as its primary input. Specific latency-budget references for STT, LLM-first-token, and TTS-first-byte live there; the end-to-end gap this module measures is decomposed there.
+
+## Compliance / consent references (hand-off to Module 108)
+
+- Any corpus you record from production must be captured under consent and retained under a specific policy. Module 108 is the compliance frame. For this module's audio collection, treat Module 108's §Consent and §Audio-retention as the operational constraint.
+
+## Reference tracks on the ladder (for the boundary discussion)
+
+- **nlp-engineer (L30)** — owns deep model internals (VAP architecture, turn-detector pretraining, loss design). <!-- needs-research: confirm the canonical nlp-engineer-learning repo URL at author time -->
+- **model-evaluation-engineer (L30)** — owns statistical methodology, calibration at depth, significance testing on small corpora. <!-- needs-research: confirm the canonical model-evaluation-engineer-learning repo URL at author time -->
+- **training-pipeline-engineer (L35)** — owns training-infrastructure for turn-detector / VAP fine-tunes if the deployment needs one. <!-- needs-research: confirm the canonical training-pipeline-engineer-learning repo URL at author time -->
+
+## Citation hygiene
+
+- Vendor API docs rotate. Field names, defaults, and even the presence of `semantic_vad` can shift across minor releases. When a specific parameter matters, cite the dated page and archive your evidence.
+- Marketing benchmark numbers from any stack are published in their best conditions. Replicate on your own corpus before citing a number in a decision.
+- Open-weights model performance claims should cite the model card + the paper. The model card is the artefact that ships; the paper is the methodology behind it.
+- Compliance posture (HIPAA, GDPR, etc.) applies to your audio collection from day one, not just at production deployment. Verify before you build the Chapter 5 corpus from real sessions.
